@@ -3,7 +3,6 @@ const tables = require("../../database/tables");
 const browse = async (req, res, next) => {
   try {
     const user = await tables.user.readAll();
-    delete user.password;
 
     res.json(user);
   } catch (err) {

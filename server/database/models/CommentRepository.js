@@ -12,8 +12,8 @@ class ContentRepository extends AbstractRepository {
   async create(item) {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const [result] = await this.database.query(
-      `insert into ${this.table} (title, user_id) values (?, ?)`,
-      [item.title, item.user_id]
+      `insert into ${this.table} (description, user_id, project_id) values (?, ?, ?)`,
+      [item.description, item.user_id, item.project_id]
     );
 
     // Return the ID of the newly inserted item
@@ -34,26 +34,32 @@ class ContentRepository extends AbstractRepository {
   }
 
   async readAll() {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await this.database.query(`select * from ${this.table}`);
 
-    // Return the array of items
     return rows;
   }
 
   // The U of CRUD - Update operation
   // TODO: Implement the update operation to modify an existing item
 
-  // async update(item) {
-  //   ...
-  // }
+  async update(item) {
+    const query = `UPDATE ${this.table} SET description = ? WHERE id = ?`;
+    const values = [item.description, item.id];
+    const [result] = await this.database.query(query, values);
+    return result;
+  }
 
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an item by its ID
 
-  // async delete(id) {
-  //   ...
-  // }
+  async delete(id) {
+    const [result] = await this.database.query(
+      `DELETE FROM ${this.table} WHERE id=?`,
+      [id]
+    );
+
+    return result.affectedRows;
+  }
 }
 
 module.exports = ContentRepository;
