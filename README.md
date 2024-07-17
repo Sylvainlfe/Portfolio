@@ -85,3 +85,8 @@ To add it during deployment, follow these 2 steps:
 
 If you want to access the logs of your online projet (to follow the deployement or to watch any bug error), connect to your VPS (`ssh user@host`).
 Then, go on your specific project and run  `docker compose logs -t -f`.
+
+Lien vers figma, excalidraw et trello :
+https://www.figma.com/design/xsxoHPGmgj4V6teOEZKZbJ/Portfolio?node-id=21-37&t=hLRo33wuYVZDnxHz-0
+https://excalidraw.com/
+https://trello.com/b/NwRVRZNj/portfolio
