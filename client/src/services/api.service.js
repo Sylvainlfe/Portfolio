@@ -1,14 +1,13 @@
-
-  export default async function getData(url) {
-      try {
-      const response = await fetch(import.meta.env.VITE_API_URL + url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response;
-    } catch (error) {
-      return error;
+export default async function fetchApi(url) {
+  try {
+    const response = await fetch(import.meta.env.VITE_API_URL + url);
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des projets");
     }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Erreur:", error);
+    throw error;
   }
+}

@@ -7,10 +7,10 @@ const router = express.Router();
 /* ************************************************************************* */
 
 // Import item-related actions
-const comment = require("../../../controllers/projectActions");
+const project = require("../../../controllers/projectActions");
 
 
-router.get("/", comment.browse);
-router.get("/:id", comment.read);
+router.get("/", project.browse);
+router.get("/:id", project.read);
 
 module.exports = router;

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Link, useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
 import ventilo1 from "../assets/images/ventilo1.svg";
 import ventilo2 from "../assets/images/ventilo2.svg";
 import ventilo3 from "../assets/images/ventilo3.svg";
@@ -12,11 +13,19 @@ import arrowB from "../assets/images/arrowB.svg";
 import allumage from "../assets/images/allumage.svg";
 
 function HomePage() {
-  const [light, setLight] = useState(true)
+  const [light, setLight] = useState(true);
   const [temperature, setTemperature] = useState(25);
   const [mode, setMode] = useState("sun");
   const [ventilators, setVentilators] = useState(1);
   const [arrowPosition, setArrowPosition] = useState(1);
+
+  const {setProject} = useOutletContext();
+  const projects = useLoaderData()
+  const navigate = useNavigate(); 
+
+  useEffect(() => {
+   setProject(projects);
+  }, [projects]);
   
 
   const handleLightClick = () => {
@@ -24,11 +33,15 @@ function HomePage() {
   };
 
   const handleIncreaseTemperature = () => {
-    setTemperature((prevTemperature) => (prevTemperature < 30 ? prevTemperature + 1 : 30));
+    setTemperature((prevTemperature) =>
+      prevTemperature < 30 ? prevTemperature + 1 : 30
+    );
   };
 
   const handleDecreaseTemperature = () => {
-    setTemperature((prevTemperature) => (prevTemperature > 12 ? prevTemperature - 1 : 12));
+    setTemperature((prevTemperature) =>
+      prevTemperature > 12 ? prevTemperature - 1 : 12
+    );
   };
 
   const handleShowSun = () => {
@@ -40,27 +53,41 @@ function HomePage() {
   };
 
   const handleIncreaseVentilators = () => {
-    setVentilators((prevVentilators) => (prevVentilators < 3 ? prevVentilators + 1 : 3));
+    setVentilators((prevVentilators) =>
+      prevVentilators < 3 ? prevVentilators + 1 : 3
+    );
   };
 
   const handleDecreaseVentilators = () => {
-    setVentilators((prevVentilators) => (prevVentilators > 1 ? prevVentilators - 1 : 1));
+    setVentilators((prevVentilators) =>
+      prevVentilators > 1 ? prevVentilators - 1 : 1
+    );
   };
 
   const handleMoveTop = () => {
     setArrowPosition((prevPosition) =>
-      prevPosition > 1 ? prevPosition - 1 : 3 
+      prevPosition > 1 ? prevPosition - 1 : 3
     );
   };
 
   const handleMoveBottom = () => {
     setArrowPosition((prevPosition) =>
-      prevPosition < 3 ? prevPosition + 1 : 1 
+      prevPosition < 3 ? prevPosition + 1 : 1
     );
   };
 
+  const handleValidation = () => {
+    if (arrowPosition === 1) {
+      navigate("/project/1"); // Utilisation de navigate pour naviguer vers /project/1
+    } else if (arrowPosition === 2) {
+      navigate("/project/2"); // Utilisation de navigate pour naviguer vers /project/2
+    } else if (arrowPosition === 3) {
+      navigate("/project/3"); // Utilisation de navigate pour naviguer vers /project/3
+    }
+  };
+
   return (
-    <main className="bg-green-light-color p-6 mx-2 mt-2 mb-10 rounded-md">
+    <main className="bg-green-light-color p-6 mx-2 mt-2 mb-10 rounded-md shadow-buttonShad">
       <article className="bg-green-dark-color pb-1 rounded-md border border-black">
         <ul className="grid grid-cols-5 grid-rows-3 gap-0 pt-5">
           <h1 className="font-semibold place-self-center col-start-1 col-end-3 row-start-2 row-end-4">
@@ -70,7 +97,7 @@ function HomePage() {
             src={allumage}
             alt="voyant allumage"
             className={`w-3 col-start-4 col-end-4 row-start-2 row-end-4 place-self-center ${
-              light ? 'bg-red-500 rounded-full' : 'bg-green-500 rounded-full'
+              light ? "bg-red-500 rounded-full" : "bg-green-500 rounded-full"
             }`}
           />
           <img
@@ -82,9 +109,9 @@ function HomePage() {
             onClick={handleLightClick}
             type="button"
             aria-label="allumer/eteindre"
-            className="bg-green-middle-color w-20 h-4 rounded-lg shadow-buttonShad col-start-5 col-end-5 row-start-2 row-end-4 place-self-center"
+            className="bg-green-middle-color w-20 h-6 rounded-lg shadow-buttonShad col-start-5 col-end-5 row-start-2 row-end-4 place-self-center text-xs"
           >
-            .
+            on/off
           </button>
         </ul>
         <ul className="grid grid-cols-[1fr_2fr_repeat(7,1fr)] grid-rows-3 gap-0 bg-terciary-bg-color m-5 rounded-md p-2 h-60">
@@ -103,15 +130,25 @@ function HomePage() {
             alt="flèche directionnelle"
             className="col-start-1 col-end-2 row-start-3 row-end-4 place-self-center w-4"
           />
-          <li className="col-start-2 col-end-3 row-start-1 row-end-2 place-self-center font-font-telecommande text-xs">
+          <Link
+            to="/project/1"
+            className="col-start-2 col-end-3 row-start-1 row-end-2 place-self-center font-font-telecommande text-xs"
+          >
             Projet 1
-          </li>
-          <li className="col-start-2 col-end-3 row-start-2 row-end-3 place-self-center font-font-telecommande text-xs">
+          </Link>
+          <Link
+            to="/project/2"
+            className="col-start-2 col-end-3 row-start-2 row-end-3 place-self-center font-font-telecommande text-xs"
+          >
             Projet 2
-          </li>
-          <li className="col-start-2 col-end-3 row-start-3 row-end-4 place-self-center font-font-telecommande text-xs">
+          </Link>
+          <Link
+            to="/project/3"
+            className="col-start-2 col-end-3 row-start-3 row-end-4 place-self-center font-font-telecommande text-xs"
+          >
             Projet 3
-          </li>
+          </Link>
+
           {arrowPosition === 1 && (
             <img
               src={arrowL}
@@ -133,7 +170,7 @@ function HomePage() {
               className="col-start-3 col-end-4 row-start-3 row-end-4 place-self-center w-6"
             />
           )}
-         {ventilators >= 1 && (
+          {ventilators >= 1 && (
             <img
               src={ventilo1}
               alt="ventilateur"
@@ -161,7 +198,7 @@ function HomePage() {
               className="col-start-6 col-end-7 row-start-1 row-end-2 place-self-center w-9"
             />
           )}
-         {mode === "flocon" && (
+          {mode === "flocon" && (
             <img
               src={flocon}
               alt="flocon"
@@ -178,6 +215,7 @@ function HomePage() {
       <article className="bg-green-dark-color mt-4 rounded-md grid grid-cols-4 gap-0 p-2 h-60">
         <button
           type="button"
+          onClick={handleValidation}
           className="bg-primary-bg-color rounded-full p-5 text-sm mr-5 col-start-1 col-end-1 w-16 h-16 place-self-center shadow-buttonShad"
         >
           Valider
