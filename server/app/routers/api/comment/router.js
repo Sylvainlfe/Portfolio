@@ -13,7 +13,7 @@ const comment = require("../../../controllers/commentActions");
 router.get("/", comment.browse);
 router.get("/:id", comment.read);
 router.put("/:id", comment.edit);
-router.post("/", comment.add);
+router.post("/:id/comments", comment.add);
 router.delete("/:id", comment.destroy);
 
 module.exports = router;

@@ -24,11 +24,11 @@ const read = async (req, res, next) => {
 };
 
 const edit = async (req, res, next) => {
-  const comment = { ...req.body, id: req.params.id };
   try {
-    await tables.comment.update(comment);
-
-    res.sendStatus(204);
+    const { text } = req.body;
+    const { id } = req.params;
+    const result = await tables.comment.update(id, { text });
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
@@ -36,11 +36,11 @@ const edit = async (req, res, next) => {
 
 
 const add = async (req, res, next) => {
-  const comment = req.body;
-
   try {
-    const insertId = await tables.comment.create(comment);
-    res.status(201).json({ insertId });
+    const {text , userId} = req.body
+    const {id : projectId} = req.params
+    const result = await tables.comment.create({text, userId, projectId})
+    res.status(201).json(result);
   } catch (err) {
     next(err);
   }
@@ -48,7 +48,8 @@ const add = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
   try {
-    await tables.comment.delete(req.params.id);
+    const {id} = req.params
+    await tables.comment.delete(id);
     res.sendStatus(204);
   } catch (err) {
     next(err);

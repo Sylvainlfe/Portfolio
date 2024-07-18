@@ -37,7 +37,8 @@ p,
 a,
 input,
 label,
-button {
+button,
+textarea {
   font-family: var(--textFont);
   font-size: larger;
 }
@@ -47,6 +48,11 @@ label {
 }
 
 input {
+  background-color: var(--primaryBgColor);
+  border: solid 1px black;
+}
+
+textarea {
   background-color: var(--primaryBgColor);
   border: solid 1px black;
 }

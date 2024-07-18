@@ -11,6 +11,7 @@ import arrowR from "../assets/images/arrowR.svg";
 import arrowT from "../assets/images/arrowT.svg";
 import arrowB from "../assets/images/arrowB.svg";
 import allumage from "../assets/images/allumage.svg";
+import ModalCv from "../components/ModalCv";
 
 function HomePage() {
   const [light, setLight] = useState(true);
@@ -18,6 +19,7 @@ function HomePage() {
   const [mode, setMode] = useState("sun");
   const [ventilators, setVentilators] = useState(1);
   const [arrowPosition, setArrowPosition] = useState(1);
+  const [toggle, setToggle] = useState(false);
 
   const {setProject} = useOutletContext();
   const projects = useLoaderData()
@@ -26,6 +28,16 @@ function HomePage() {
   useEffect(() => {
    setProject(projects);
   }, [projects]);
+
+  
+
+  const handleIsVisible = () => {
+    setToggle(false);
+  };
+
+  const handleVisible = () => {
+    setToggle(true);
+  };
   
 
   const handleLightClick = () => {
@@ -33,9 +45,13 @@ function HomePage() {
   };
 
   const handleIncreaseTemperature = () => {
-    setTemperature((prevTemperature) =>
-      prevTemperature < 30 ? prevTemperature + 1 : 30
-    );
+    setTemperature((prevTemperature) => {
+      const newTemperature = prevTemperature < 30 ? prevTemperature + 1 : 30;
+      if (newTemperature === 30) {
+        handleVisible();
+      }
+      return newTemperature;
+    });
   };
 
   const handleDecreaseTemperature = () => {
@@ -67,8 +83,8 @@ function HomePage() {
   const handleMoveTop = () => {
     setArrowPosition((prevPosition) =>
       prevPosition > 1 ? prevPosition - 1 : 3
-    );
-  };
+  );
+};
 
   const handleMoveBottom = () => {
     setArrowPosition((prevPosition) =>
@@ -78,16 +94,17 @@ function HomePage() {
 
   const handleValidation = () => {
     if (arrowPosition === 1) {
-      navigate("/project/1"); // Utilisation de navigate pour naviguer vers /project/1
+      navigate("/project/1"); 
     } else if (arrowPosition === 2) {
-      navigate("/project/2"); // Utilisation de navigate pour naviguer vers /project/2
+      navigate("/project/2"); 
     } else if (arrowPosition === 3) {
-      navigate("/project/3"); // Utilisation de navigate pour naviguer vers /project/3
+      navigate("/project/3"); 
     }
   };
 
   return (
     <main className="bg-green-light-color p-6 mx-2 mt-2 mb-10 rounded-md shadow-buttonShad">
+        <ModalCv handleIsVisible={handleIsVisible} toggle={toggle}/>
       <article className="bg-green-dark-color pb-1 rounded-md border border-black">
         <ul className="grid grid-cols-5 grid-rows-3 gap-0 pt-5">
           <h1 className="font-semibold place-self-center col-start-1 col-end-3 row-start-2 row-end-4">
@@ -341,14 +358,15 @@ function HomePage() {
       </article>
 
       <p className="bg-secondary-bg-color border border-black shadow-buttonShad p-2 m-5">
-        ⚠ Attention - Respectez bien les consignes de sécurité.Ne pas mettre à
-        la portée des enfants, des animaux, ni des végétaux.Cette télécommande
+        ⚠ Attention - Respectez bien les consignes de sécurité. Ne pas mettre à
+        la portée des enfants, des animaux, ni des végétaux. Cette télécommande
         n’est pas un jouet. Respectez bien les températures de consigne.
         Toutefois, veuillez noter que si vous montez la température à 30°C, vous
         risquez de tomber sur un profil chaud comme la braise, avide d'apprendre
-        de nouvelles choses et cherchant toujours à évoluer...Laissez-vous
+        de nouvelles choses et cherchant toujours à évoluer... Laissez-vous
         tenter ! ⚠
       </p>
+
     </main>
   );
 }
